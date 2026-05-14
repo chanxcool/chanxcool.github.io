@@ -1,1 +1,82 @@
-a
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>智绘非遗 - 窗棂算法工坊</title>
+    <style>
+        body { font-family: system-ui, -apple-system, sans-serif; display: flex; flex-direction: column; align-items: center; background-color: #f7f3e8; color: #333; }
+        .container { display: flex; gap: 20px; margin-top: 40px; }
+        .control-panel { background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); width: 300px; }
+        canvas { background: #fff; border: 2px solid #8b4513; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        .ai-edu-box { margin-top: 20px; padding: 15px; background: #eef2f5; border-left: 4px solid #4a90e2; border-radius: 4px; }
+    </style>
+</head>
+<body>
+    <h1>⛩️ 智绘非遗：传统窗棂几何工坊</h1>
+    <div class="container">
+        <canvas id="traceryCanvas" width="400" height="400"></canvas>
+        <div class="control-panel">
+            <h3>算法参数控制</h3>
+            <label>图案复杂度 (递归层数): <span id="depthVal">3</span></label>
+            <input type="range" id="depth" min="1" max="5" value="3" style="width: 100%;">
+            
+            <label>对称轴数量: <span id="symVal">4</span></label>
+            <input type="range" id="symmetry" min="2" max="8" value="4" step="2" style="width: 100%;">
+            
+            <button onclick="drawPattern()" style="margin-top: 15px; padding: 8px 16px; background: #8b4513; color: white; border: none; border-radius: 4px; cursor: pointer;">生成非遗图案</button>
+
+            <div class="ai-edu-box">
+                <h4>🤖 AI 科普解读</h4>
+                <p id="eduText">当前的图案展现了经典的“步步锦”纹样，体现了中国传统榫卯结构中受力均匀的物理学智慧...</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('traceryCanvas');
+        const ctx = canvas.getContext('2d');
+
+        // 核心算法：用计算思维绘制对称几何图形（伪代码逻辑，可深入完善）
+        function drawPattern() {
+            const depth = document.getElementById('depth').value;
+            const symmetry = document.getElementById('symmetry').value;
+            document.getElementById('depthVal').innerText = depth;
+            document.getElementById('symVal').innerText = symmetry;
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.strokeStyle = '#8b4513';
+            ctx.lineWidth = 2;
+
+            // 示例：简单的中心对称线绘制
+            const cx = canvas.width / 2;
+            const cy = canvas.height / 2;
+            const radius = 150 + (depth * 10);
+
+            for(let i = 0; i < symmetry; i++) {
+                let angle = (Math.PI * 2 / symmetry) * i;
+                ctx.beginPath();
+                ctx.moveTo(cx, cy);
+                ctx.lineTo(cx + Math.cos(angle) * radius, cy + Math.sin(angle) * radius);
+                // 这里可以加入更复杂的递归分形算法来生成真正的窗棂图案
+                ctx.stroke();
+            }
+            
+            updateEducationText(depth, symmetry);
+        }
+
+        function updateEducationText(depth, symmetry) {
+            // 模拟 AI 或逻辑规则输出科普内容
+            const textEl = document.getElementById('eduText');
+            if(symmetry > 4) {
+                textEl.innerText = "高阶对称图形：在古代常用于皇家园林，体现了数学上的中心旋转对称群(Point group)概念。";
+            } else {
+                textEl.innerText = "基础网格结构：展现了经典的“冰裂纹”或“步步锦”纹样雏形，体现了中国传统木作结构中力学分散的物理智慧。";
+            }
+        }
+
+        // 初始化
+        drawPattern();
+    </script>
+</body>
+</html>
